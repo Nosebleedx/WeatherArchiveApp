@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WeatherArchiveApp.Models;
 
 namespace WeatherArchiveApp.Data
 {
@@ -16,9 +15,9 @@ namespace WeatherArchiveApp.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql(Configuration.GetConnectionString("DbConnectionString"));
-            
+
         }
 
-        public DbSet<WeatherData> WeatherData {  get; set; }
+        public DbSet<WeatherData> WeatherData { get; set; }
     }
 }

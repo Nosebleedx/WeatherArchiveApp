@@ -1,10 +1,6 @@
-﻿using System;
-using System.Globalization;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using NPOI.SS.UserModel;
+﻿using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
+using System.Globalization;
 
 namespace WeatherArchiveApp.Services
 {
@@ -12,15 +8,14 @@ namespace WeatherArchiveApp.Services
     {
         private readonly WeatherDataService _weatherDataService;
 
-        // Конструктор с инжекцией зависимостей для WeatherDataService
         public WeatherArchiveService(WeatherDataService weatherDataService)
         {
             _weatherDataService = weatherDataService;
         }
 
-        public async Task<(bool Success, string ErrorMessage)> ProcessFilesAsync(IEnumerable<IFormFile> files)
+        public async Task<(bool Success, string ErrorMessage)> ProcessFilesAsync(ICollection<IFormFile> files)
         {
-            if (files == null || !files.Any())
+            if (!files.Any())
             {
                 return (false, "Файл не выбран.");
             }
@@ -34,7 +29,7 @@ namespace WeatherArchiveApp.Services
                 try
                 {
                     using var stream = file.OpenReadStream();
-                    IWorkbook workbook = new XSSFWorkbook(stream); 
+                    IWorkbook workbook = new XSSFWorkbook(stream);
                     ISheet sheet = workbook.GetSheetAt(0);
                     bool fileHasData = false;
 
@@ -42,8 +37,6 @@ namespace WeatherArchiveApp.Services
                     {
                         IRow row = sheet.GetRow(rowIndex);
                         if (row == null) continue;
-
-                        var tt = ParseTime(row.GetCell(1));
 
                         var data = new WeatherData
                         {
@@ -80,8 +73,6 @@ namespace WeatherArchiveApp.Services
             return (true, "Все файлы успешно загружены.");
         }
 
-
-
         private DateOnly ParseDate(ICell cell)
         {
             if (cell == null) return new DateOnly(2025, 01, 01);
@@ -95,7 +86,6 @@ namespace WeatherArchiveApp.Services
 
             return new DateOnly(2025, 01, 01);
         }
-
 
         private TimeOnly ParseTime(ICell cell)
         {
