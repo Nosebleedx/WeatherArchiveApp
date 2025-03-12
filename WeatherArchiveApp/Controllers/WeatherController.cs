@@ -21,7 +21,7 @@ public class WeatherController : Controller
     public async Task<IActionResult> Index()
     {
         var weatherList = await _context.WeatherData.OrderByDescending(w => w.DateTime).ToListAsync();
-        return View(weatherList); 
+        return View(weatherList);
     }
 
     [HttpGet]
@@ -60,8 +60,8 @@ public class WeatherController : Controller
 
         if (!success)
         {
-            TempData["ErrorMessage"] = errorMessage;  
-            return RedirectToAction("UploadArchives");  
+            TempData["ErrorMessage"] = errorMessage;
+            return RedirectToAction("UploadArchives");
         }
 
         TempData["SuccessMessage"] = errorMessage;

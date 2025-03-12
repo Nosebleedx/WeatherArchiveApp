@@ -5,7 +5,7 @@ public class WeatherData
 {
     public int Id { get; set; }
     public DateOnly DateTime { get; set; }
-    public TimeOnly Time { get; set; } 
+    public TimeOnly Time { get; set; }
     public float? Temperature { get; set; }
     public int? Humidity { get; set; }
     public float? DewPoint { get; set; }
