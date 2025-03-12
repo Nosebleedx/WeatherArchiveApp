@@ -1,0 +1,95 @@
+﻿@model WeatherArchiveApp.Models.WeatherArchiveViewModel
+
+<h1>Страница просмотра архивов погоды</h1>
+
+<form method="get">
+    @{
+        var yearsHtml = new System.Text.StringBuilder();
+        yearsHtml.AppendLine("<option value=\"\">Все годы</option>");
+        for (int y = 2000; y <= 2025; y++)
+        {
+            var isSelected = Model.SelectedYear == y ? "selected" : "";
+            yearsHtml.AppendLine($"<option value=\"{y}\" {isSelected}>{y}</option>");
+        }
+    }
+    <select name="SelectedYear" id="SelectedYear">
+        @Html.Raw(yearsHtml.ToString())
+    </select>
+
+    @{
+        var monthsHtml = new System.Text.StringBuilder();
+        monthsHtml.AppendLine("<option value=\"\">Все месяцы</option>");
+        for (int m = 1; m <= 12; m++)
+        {
+            var monthName = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(m);
+            var isSelected = Model.SelectedMonth == m ? "selected" : "";
+            monthsHtml.AppendLine($"<option value=\"{m}\" {isSelected}>{monthName}</option>");
+        }
+    }
+    <select name="SelectedMonth" id="SelectedMonth">
+        @Html.Raw(monthsHtml.ToString())
+    </select>
+
+    <button type="submit">Применить</button>
+</form>
+
+
+@if (Model.WeatherDataList.Any())
+{
+    <table style="border: 1px solid black; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th style="border: 1px solid black;">Дата</th>
+                <th style="border: 1px solid black;">Время по МСК</th>
+                <th style="border: 1px solid black;">Температура</th>
+                <th style="border: 1px solid black;">Отн. влажность</th>
+                <th style="border: 1px solid black;">Точка росы</th>
+                <th style="border: 1px solid black;">мм. рт.ст.</th>
+                <th style="border: 1px solid black;">Направление</th>
+                <th style="border: 1px solid black;">Скорость ветра</th>
+                <th style="border: 1px solid black;">Облачность</th>
+                <th style="border: 1px solid black;">Нижню гр. облачости</th>
+                <th style="border: 1px solid black;">Горизонтальная видимость</th>
+                <th style="border: 1px solid black;">Природные явл.</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.WeatherDataList)
+            {
+                <tr>
+                    <td style="border: 1px solid black;">@item.DateTime.ToString()</td>
+                    <td style="border: 1px solid black;">@item.Time</td>
+                    <td style="border: 1px solid black;">@item.Temperature</td>
+                    <td style="border: 1px solid black;">@item.Humidity</td>
+                    <td style="border: 1px solid black;">@item.DewPoint</td>
+                    <td style="border: 1px solid black;">@item.Pressure</td>
+                    <td style="border: 1px solid black;">@item.WindDirection</td>
+                    <td style="border: 1px solid black;">@item.WindSpeed</td>
+                    <td style="border: 1px solid black;">@item.Cloudiness</td>
+                    <td style="border: 1px solid black;">@item.CloudBaseHeight</td>
+                    <td style="border: 1px solid black;">@item.Visibility</td>
+                    <td style="border: 1px solid black;">@item.WeatherPhen</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Нет данных для отображения</p>
+}
+
+<div>
+    @for (int i = 1; i <= Model.TotalPages; i++)
+    {
+        <a asp-controller="Weather" asp-action="ViewArchives"
+           asp-route-page="@i"
+           asp-route-year="@Model.SelectedYear"
+           asp-route-month="@Model.SelectedMonth"
+           class="@(i == Model.CurrentPage ? "active-page" : "")"
+           style="margin-right: 5px;">
+            @i
+        </a>
+    }
+</div>
+

@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Загрузка архивов";
+}
+
+<div>
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+</div>
+
+<form asp-action="UploadArchives" method="post" enctype="multipart/form-data">
+    <input type="file" name="files" multiple />
+    <button type="submit">Загрузить архивы</button>
+</form>

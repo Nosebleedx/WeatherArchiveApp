@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  weatherarchiveapp:
+    image: ${DOCKER_REGISTRY-}weatherarchiveapp
+    ports:
+      - "8080:8080"
+    build:
+      context: .
+      dockerfile: WeatherArchiveApp/Dockerfile
+    depends_on:
+      - postgres
+  
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: weatherArchiveDb
+    ports:
+      - "5432:5432"
+

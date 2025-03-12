@@ -1,0 +1,11 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1>Архив погоды Москвы</h1>
+    <ul>
+        <li><a asp-controller="Weather" asp-action="ViewArchives">Просмотр архивов</a></li>
+        <li><a asp-controller="Weather" asp-action="UploadArchives">Загрузка архивов</a></li>
+    </ul>
+</div>
